@@ -146,30 +146,4 @@ client.on(Events.InteractionCreate, async interaction => {
   }
 });
 
-
-const TARGET_USER_ID = process.env.TARGET_USER_ID;
-const GUILD_ID = process.env.GUILD_ID; // .env dosyasından alınır
-const TIMEOUT_DURATION = 7 * 24 * 60 * 60 * 1000; // 1 hafta (ms)
-const INTERVAL = 1 * 60 * 1000; // 1 dakika (ms)
-
-async function loopTimeoutUser() {
-  try {
-    const guild = client.guilds.cache.get(GUILD_ID);
-    if (!guild) return;
-    const member = await guild.members.fetch(TARGET_USER_ID).catch(() => null);
-    if (!member) return;
-
-    await member.timeout(TIMEOUT_DURATION, 'Otomatik sürekli timeout');
-    console.log(`${member.user.tag} kullanıcısı otomatik olarak 1 hafta timeoutlandı.`);
-  } catch (err) {
-    console.error('Otomatik timeout sırasında hata:', err);
-  }
-}
-
-client.once('ready', () => {
-  loopTimeoutUser();
-  setInterval(loopTimeoutUser, INTERVAL);
-});
-
-
 client.login(process.env.TOKEN);
